@@ -20,7 +20,7 @@ def create_image():
 
     return image
 
-
+installed = True if subprocess.run(["which","iproxy"]).returncode == 0 else False
 running_state = False
 ssh = False
 debug = False
@@ -83,7 +83,7 @@ def get_start_state(v):
     def inner(item):
         if not ssh and not debug: #not selected
             return False
-        elif not running_state:
+        elif not running_state and installed:
             return True
         elif running_state:
             return False
@@ -101,7 +101,6 @@ def get_stop_state(v):
 def running_status(v):
     return 'Running' if running_state else 'Not Running'
 
-installed = True if subprocess.run(["which","iproxy"]).returncode == 0 else False
 
 # Update the state in `on_clicked` and return the new state in
 # a `checked` callable
