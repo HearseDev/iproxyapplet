@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from pystray import Icon as icon, Menu as menu, MenuItem as item
 from PIL import Image, ImageDraw
-import threading
 import subprocess
 width=50
 height=50
@@ -24,6 +23,8 @@ installed = True if subprocess.run(["which","iproxy"]).returncode == 0 else Fals
 running_state = False
 ssh = False
 debug = False
+ssh_process : subprocess.Popen
+debug_process : subprocess.Popen
 
 
 def ssh_clicked(icon, item):
@@ -34,40 +35,25 @@ def debug_clicked(icon, item):
     global debug
     debug = not item.checked
 
-def start_ssh_tunnel():
-    subprocess.run(["iproxy", "2222", "22"])
-
-def start_debug_tunnel():
-   o = subprocess.run(["iproxy", "1234", "1234"])
-
-
-ssh_thread : threading.Thread
-debug_thread : threading.Thread
-
 def start_clicked(icon, item):
     global running_state
-    global ssh_thread
-    global debug_thread
+    global ssh_process
+    global debug_process
     running_state = True
     if ssh:
-        ssh_thread = threading.Thread(target=start_ssh_tunnel)
-        ssh_thread.start()
+        ssh_process = subprocess.Popen("iproxy 2222 22", shell=True)
     if debug:
-        debug_thread = threading.Thread(target=start_debug_tunnel)
-        debug_thread.start()
+        debug_process = subprocess.Popen("iproxy 1234 1234", shell=True)
 
 def stop_clicked(icon, item):
     global running_state
     global ssh_thread
     global debug_thread
     if running_state:
-        subprocess.run(["killall", "iproxy"])
         if ssh:
-            ssh_thread.join()
-            print(ssh_thread)
+            ssh_process.kill()
         if debug:
-            debug_thread.join()
-            print(debug_thread)
+            debug_process.kill()
     running_state = False
 
 def get_radio_state(v):
