@@ -51,9 +51,9 @@ def stop_clicked(icon, item):
     global debug_thread
     if running_state:
         if ssh:
-            ssh_process.kill()
+            ssh_process.terminate()
         if debug:
-            debug_process.kill()
+            debug_process.terminate()
     running_state = False
 
 def get_radio_state(v):
