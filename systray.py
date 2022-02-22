@@ -131,18 +131,6 @@ def device_run_command(cmd):
         print(cmd)
         subprocess.Popen('ssh -f root@localhost -p 2222 "' + cmd + '"', shell=True)
     return inner
-def set_udid_clicked():
-    import tkinter as tk  
-    from tkinter import ttk
-    win = tk.Tk()# Application Name  
-    win.title("iproxyapplet")# Label  
-    lbl = ttk.Label(win, text = "UDID:").grid(column = 0, row = 0)# Click event  
-    def click():   
-        print(name.get())# Textbox widget  
-    name = tk.StringVar()  
-    nameEntered = ttk.Entry(win, width = 12, textvariable = name).grid(column = 0, row = 1)# Button widget  
-    button = ttk.Button(win, text = "Set", command = click).grid(column = 1, row = 1)  
-    win.mainloop()
 # Update the state in `on_clicked` and return the new state in
 # a `checked` callable
 
@@ -193,7 +181,6 @@ menu = (
     item("Stop", stop_clicked, enabled=get_stop_state(item.enabled)),
     device_command_submenu,
     item("Exit", exit_clicked),
-    item('Custom UDID', set_udid_clicked)
     )
 
 image = Image.open("icon.png")
