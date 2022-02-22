@@ -92,7 +92,16 @@ def get_stop_state(v):
             return True
     return inner
 def running_status(_):
-    return 'Running' if running_state else 'Not Running'
+    if running_state:
+        status = "Running: "
+        if ssh:
+            status += "ssh "
+        if debug:
+            status += "debug "
+        return status
+    else:
+        return 'Idle'
+    # return 'Running' if running_state else 'Not Running'
 def exit_clicked(icon):
     terminate_processes()
     icon.stop()
@@ -128,5 +137,5 @@ icon('iProxy', create_image(), menu=menu(
     item('Device',menu(
         item('Respring',device_run_command("sbreload"), enabled=get_device_state(item.enabled)),
         item('LDRestart',device_run_command("ldrestart"), enabled=get_device_state(item.enabled)),
-        item('Userspace Reboot',device_run_command("launchctl reboot userspace"),enabled=get_device_state(item.enabled)))),
+        item('Userspace Reboot',device_run_command("launchctl reboot userspace"),enabled=get_device_state(item.enabled))),enabled=installed),
     item('Exit',exit_clicked))).run()
