@@ -110,6 +110,9 @@ class Applet:
                 status += "ssh "
             if self.debug:
                 status += "debug "
+            for key,value in self.optional_ports.items():
+                if value:
+                    status += key + " "
             return status
         else:
             return "Idle"
