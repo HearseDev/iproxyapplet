@@ -61,7 +61,7 @@ class Applet:
             command = "iproxy " + ' '.join(self.ports) + optports
             print(command)
             self.iproxy_process = subprocess.Popen(command, shell=True)
-            print("Started self.iproxy_process with pid", self.iproxy_process.pid)
+            print("Started iproxy_process with pid", self.iproxy_process.pid)
 
 
     def stop_clicked(self,icon, item):
